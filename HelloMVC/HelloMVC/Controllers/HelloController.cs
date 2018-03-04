@@ -10,20 +10,28 @@ namespace HelloMVC.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            string html = "<form method='post'>" + 
-                "<input type='text' name='name' />" + 
+            string html = "<form method='post' action='/Hello'>" + 
+                "<input type='text' name='name' />" +
+                "<select name='lang'>" + 
+                    "<option value='english'>English</option>" +
+                    "<option value='french'>French</option>" +
+                    "<option value='spanish'>Spanish</option>" +
+                    "<option value='italian'>Italian</option>" +
+                    "<option value='japanese'>Japanese</option>" +
+               "</select>" + 
                 "<input type='submit' value='Greet me!' />" + 
                 "</form>";
 
-            return Redirect("/Hello/Goodbye");
+            return Content(html, "text/html");
         }
 
         // /Hello
         [Route("/Hello")]
         [HttpPost]
-        public IActionResult Display(string name = "World")
+        public IActionResult Display(string name, string lang)
         {
-            return Content(string.Format("<h1>Hello, {0}!</h1>", name), "text/html");
+            string html = CreateMessage(name, lang);
+            return Content(html, "text/html");
         }
 
         // Handle requests to /Hello/NAME (URL segment)
@@ -37,6 +45,33 @@ namespace HelloMVC.Controllers
         public IActionResult Goodbye()
         {
             return Content("Goodbye, World!");
+        }
+        
+        public static string CreateMessage(string name, string language)
+        {
+            string html = "";
+            if (language == "english")
+            {
+                html = string.Format("<h1>Hello, {0}!</h1>", name);
+            }
+            if (language == "french")
+            {
+                html = string.Format("<h1>Bonjour, {0}!</h1>", name);
+            }
+            if (language == "spanish")
+            {
+                html = string.Format("<h1>Hola, {0}!</h1>", name);
+            }
+            if (language == "italian")
+            {
+                html = string.Format("<h1>Ciao, {0}!</h1>", name);
+            }
+            if (language == "japanese")
+            {
+                html = string.Format("<h1>Konnichiwa, {0}!</h1>", name);
+            }
+
+            return html;
         }
     }
 }
